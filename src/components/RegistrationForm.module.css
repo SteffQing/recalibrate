@@ -1,0 +1,374 @@
+.form {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionLabel {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: -0.5rem;
+}
+
+/* --- Field Grid --- */
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Individual Field --- */
+.field,
+.fieldFull {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field label,
+.fieldFull label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--cream-muted);
+  letter-spacing: 0.02em;
+}
+
+.field input,
+.field select,
+.fieldFull input,
+.fieldFull textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(212, 160, 23, 0.25);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.2rem;
+  transition: border-color var(--transition-fast);
+  outline: none;
+  width: 100%;
+}
+
+.field input:focus,
+.field select:focus,
+.fieldFull input:focus,
+.fieldFull textarea:focus {
+  border-bottom-color: var(--gold);
+}
+
+.field input::placeholder,
+.fieldFull input::placeholder,
+.fieldFull textarea::placeholder {
+  color: rgba(191, 168, 130, 0.45);
+}
+
+.field select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23BFA882' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.2rem center;
+}
+
+.field select option {
+  background: var(--bg-surface);
+  color: var(--cream);
+}
+
+/* --- Textarea --- */
+.fieldFull textarea {
+  resize: vertical;
+  min-height: 100px;
+  border: 1.5px solid rgba(212, 160, 23, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  line-height: 1.6;
+}
+
+.fieldFull textarea:focus {
+  border-color: var(--gold);
+}
+
+/* --- Divider --- */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 160, 23, 0.2) 20%,
+    rgba(212, 160, 23, 0.2) 80%,
+    transparent
+  );
+  margin: 0.5rem 0;
+}
+
+/* --- Radio Group --- */
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--cream);
+  transition: color var(--transition-fast);
+}
+
+.radioLabel:hover {
+  color: var(--gold-light);
+}
+
+.radioLabel input[type="radio"] {
+  display: none;
+}
+
+.radioMark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-dim);
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.radioLabel input[type="radio"]:checked + .radioMark {
+  border-color: var(--gold);
+}
+
+.radioLabel input[type="radio"]:checked + .radioMark::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.conditionalInput {
+  margin-top: 0.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(212, 160, 23, 0.25);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.2rem;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition-fast);
+}
+
+.conditionalInput:focus {
+  border-bottom-color: var(--gold);
+}
+
+.conditionalInput::placeholder {
+  color: rgba(191, 168, 130, 0.45);
+}
+
+/* --- Info Blocks (Checklist & Rules) --- */
+.infoBlock {
+  background: rgba(212, 160, 23, 0.04);
+  border: 1px solid rgba(212, 160, 23, 0.12);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+}
+
+.infoBlock h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  margin-bottom: 0.25rem;
+}
+
+.infoSubtext {
+  font-size: 0.82rem;
+  color: var(--cream-muted);
+  margin-bottom: 1rem;
+}
+
+.checklistColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 500px) {
+  .checklistColumns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checklistColumns h4 {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.checklistColumns ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.checklistColumns li {
+  font-size: 0.88rem;
+  color: var(--cream);
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.checklistColumns li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  color: var(--gold-dim);
+  font-size: 0.65rem;
+  top: 0.15rem;
+}
+
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.rulesList li {
+  font-size: 0.88rem;
+  color: var(--cream);
+  line-height: 1.5;
+}
+
+.rulesList li::marker {
+  color: var(--gold-dim);
+  font-weight: 600;
+}
+
+/* --- Agreement Checkbox --- */
+.agreementLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--cream);
+  line-height: 1.4;
+}
+
+.agreementLabel input[type="checkbox"] {
+  display: none;
+}
+
+.checkMark {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1.5px solid var(--gold-dim);
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.agreementLabel input[type="checkbox"]:checked + .checkMark {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.agreementLabel input[type="checkbox"]:checked + .checkMark::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--bg-deep);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* --- Error --- */
+.error {
+  color: var(--red);
+  font-size: 0.85rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(192, 57, 43, 0.1);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  border-radius: var(--radius-sm);
+}
+
+/* --- Submit Button --- */
+.submitBtn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  color: var(--bg-deep);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  letter-spacing: 0.03em;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(212, 160, 23, 0.3);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Spinner --- */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(13, 7, 4, 0.3);
+  border-top-color: var(--bg-deep);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

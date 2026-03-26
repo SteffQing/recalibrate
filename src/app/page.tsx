@@ -1,66 +1,148 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import RegistrationForm from "@/components/RegistrationForm";
+import SuccessModal from "@/components/SuccessModal";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const [showSuccess, setShowSuccess] = useState(false);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+    <>
+      {/* Hero */}
+      <section className={styles.hero}>
+        <div className={styles.heroBg} />
+        <div className={styles.heroContent}>
+          <div className={styles.heroLogos}>
+            <svg
+              className={styles.turnersLogo}
+              viewBox="0 0 120 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+              <text
+                x="2"
+                y="16"
+                fontFamily="Arial Black, Arial"
+                fontWeight="900"
+                fontSize="14"
+                fill="#E8751A"
+                letterSpacing="-0.5"
+              >
+                tur
+              </text>
+              <text
+                x="2"
+                y="30"
+                fontFamily="Arial Black, Arial"
+                fontWeight="900"
+                fontSize="14"
+                fill="#E8751A"
+                letterSpacing="-0.5"
+              >
+                ners
+              </text>
+              <circle cx="10" cy="4" r="3" fill="#D4A017" />
+              <path
+                d="M8 6 Q10 10 12 6"
+                stroke="#E8751A"
+                strokeWidth="1.5"
+                fill="none"
+              />
+            </svg>
+            <svg
+              className={styles.recalibrateLogo}
+              viewBox="0 0 100 50"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+              <rect
+                x="2"
+                y="2"
+                width="96"
+                height="46"
+                rx="4"
+                stroke="#fff"
+                strokeWidth="2"
+                fill="none"
+              />
+              <text
+                x="50"
+                y="18"
+                textAnchor="middle"
+                fontFamily="Arial Black, Arial"
+                fontWeight="900"
+                fontSize="11"
+                fill="#fff"
+                letterSpacing="1"
+              >
+                RECALI
+              </text>
+              <text
+                x="50"
+                y="32"
+                textAnchor="middle"
+                fontFamily="Arial Black, Arial"
+                fontWeight="900"
+                fontSize="11"
+                fill="#fff"
+                letterSpacing="1"
+              >
+                BRATE
+              </text>
+              <text
+                x="50"
+                y="43"
+                textAnchor="middle"
+                fontFamily="Arial, sans-serif"
+                fontSize="7"
+                fill="#fff"
+                letterSpacing="2"
+              >
+                CAMP
+              </text>
+            </svg>
+          </div>
+          <p className={styles.heroEventTitle}>Recalibrate Camp Meeting</p>
+          <h1 className={styles.heroTitle}>
+            <span className={styles.heroThe}>The</span>{" "}
+            <span className={styles.heroGod}>God</span>
+            <br />
+            <span className={styles.heroOf}>of </span>
+            <span className={styles.heroGlory}>Glory</span>
+          </h1>
+          <p className={styles.heroCta}>Register Now &amp; Secure Your Spot</p>
+          <a href="#register" className={styles.heroBtn}>
+            Begin Registration
           </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
         </div>
-      </main>
-    </div>
+        <div className={styles.heroFade} />
+      </section>
+
+      {/* Registration Section */}
+      <section id="register" className={styles.registerSection}>
+        <div className={styles.registerHeader}>
+          <div className={styles.ornament}>
+            <span />
+            <span />
+            <span />
+          </div>
+          <h2>Registration Form</h2>
+          <p>Fill out the details below to secure your spot at the camp.</p>
+        </div>
+        <RegistrationForm onSuccess={() => setShowSuccess(true)} />
+      </section>
+
+      {/* Footer */}
+      <footer className={styles.footer}>
+        <p>Recalibrate Camp Meeting &copy; {new Date().getFullYear()}</p>
+        <p>
+          Hosted by <strong>Turners</strong>
+        </p>
+      </footer>
+
+      {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} />}
+    </>
   );
 }

@@ -1,0 +1,95 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+  animation: fadeIn 0.3s var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  animation: slideUp 0.4s var(--ease-out);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.iconWrap {
+  margin-bottom: 1.25rem;
+  animation: scaleIn 0.5s var(--ease-out) 0.15s both;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--gold-light);
+  margin-bottom: 0.75rem;
+}
+
+.modal p {
+  font-size: 0.92rem;
+  color: var(--cream-muted);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.reminder {
+  font-size: 0.82rem !important;
+  color: var(--gold-dim) !important;
+  font-style: italic;
+  margin-top: 0.75rem !important;
+}
+
+.closeBtn {
+  margin-top: 1.5rem;
+  padding: 0.7rem 2.5rem;
+  background: var(--gold);
+  color: var(--bg-deep);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
