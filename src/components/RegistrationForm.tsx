@@ -99,6 +99,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
       }
 
       onSuccess();
+      setForm(initialFormData);
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
