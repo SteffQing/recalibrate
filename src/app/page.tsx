@@ -6,8 +6,8 @@ import SuccessModal from "@/components/SuccessModal";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const [showSuccess, setShowSuccess] = useState(true);
-  const [registeredId, setRegisteredId] = useState<number | null>(1);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [registeredId, setRegisteredId] = useState<number | null>(null);
 
   return (
     <>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import styles from "./page.module.css";
 
-const ACCESS_CODE = "";
+const ACCESS_CODE = process.env.NEXT_PUBLIC_ACCESS_CODE;
 
 export default function VerifyPage() {
   const [isGated, setIsGated] = useState(true);
@@ -17,6 +17,7 @@ export default function VerifyPage() {
     e.preventDefault();
     if (password === ACCESS_CODE) {
       setIsGated(false);
+      setPassword(""); // This already clears the password state
       setError("");
     } else {
       setError("Incorrect access code");
@@ -119,14 +120,21 @@ export default function VerifyPage() {
                       <strong>Name:</strong> {scanResult.data.fullName}
                     </p>
                     <p>
-                      <strong>Category:</strong> {scanResult.data.category}
-                    </p>
-                    <p>
-                      <strong>Residence:</strong> {scanResult.data.residence}
+                      <strong>Email:</strong> {scanResult.data.email}
                     </p>
                     <p>
                       <strong>Phone:</strong> {scanResult.data.phoneNumber}
                     </p>
+                    {scanResult.data.isMinister && (
+                      <p>
+                        <strong>Minister:</strong> {scanResult.data.ministryDetails}
+                      </p>
+                    )}
+                    {scanResult.data.isFellowshipLeader && (
+                      <p>
+                        <strong>Leader:</strong> {scanResult.data.fellowshipDetails}
+                      </p>
+                    )}
                   </div>
                 </>
               ) : (

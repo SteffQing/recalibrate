@@ -6,14 +6,17 @@ import styles from "./RegistrationForm.module.css";
 interface FormData {
   fullName: string;
   email: string;
+  phoneNumber: string;
   institution: string;
   occupation: string;
   sex: string;
   location: string;
   hearAbout: string;
   hearAboutOther: string;
-  isLeader: string;
-  leaderOffice: string;
+  isMinister: string; // "Yes" | "No"
+  ministryDetails: string;
+  isFellowshipLeader: string; // "Yes" | "No"
+  fellowshipDetails: string;
   expectations: string;
   agreedToRules: boolean;
 }
@@ -21,14 +24,17 @@ interface FormData {
 const initialFormData: FormData = {
   fullName: "",
   email: "",
+  phoneNumber: "",
   institution: "",
   occupation: "",
   sex: "",
   location: "",
   hearAbout: "",
   hearAboutOther: "",
-  isLeader: "",
-  leaderOffice: "",
+  isMinister: "",
+  ministryDetails: "",
+  isFellowshipLeader: "",
+  fellowshipDetails: "",
   expectations: "",
   agreedToRules: false,
 };
@@ -71,6 +77,20 @@ export default function RegistrationForm({ onSuccess }: Props) {
       return;
     }
 
+    // Validation for sequential leadership questions
+    if (form.isMinister === "Yes" && !form.ministryDetails.trim()) {
+      setError("Please provide details about your ministry.");
+      return;
+    }
+    if (form.isMinister === "No" && !form.isFellowshipLeader) {
+      setError("Please indicate if you are a campus fellowship leader.");
+      return;
+    }
+    if (form.isMinister === "No" && form.isFellowshipLeader === "Yes" && !form.fellowshipDetails.trim()) {
+      setError("Please provide details about your campus fellowship and post held.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -80,13 +100,16 @@ export default function RegistrationForm({ onSuccess }: Props) {
         body: JSON.stringify({
           fullName: form.fullName,
           email: form.email,
+          phoneNumber: form.phoneNumber,
           institution: form.institution,
           occupation: form.occupation,
           sex: form.sex,
           location: form.location,
           hearAbout,
-          isLeader: form.isLeader === "Yes",
-          leaderOffice: form.isLeader === "Yes" ? form.leaderOffice : null,
+          isMinister: form.isMinister === "Yes",
+          ministryDetails: form.isMinister === "Yes" ? form.ministryDetails : null,
+          isFellowshipLeader: form.isFellowshipLeader === "Yes",
+          fellowshipDetails: form.isFellowshipLeader === "Yes" ? form.fellowshipDetails : null,
           expectations: form.expectations,
         }),
       });
@@ -95,6 +118,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
 
       if (!res.ok) {
         setError(data.error || "Something went wrong.");
+        setLoading(false);
         return;
       }
 
@@ -110,22 +134,26 @@ export default function RegistrationForm({ onSuccess }: Props) {
   const isFormValid =
     form.fullName &&
     form.email &&
+    form.phoneNumber &&
     form.institution &&
     form.occupation &&
     form.sex &&
     form.location &&
     form.hearAbout &&
     (form.hearAbout !== "Others" || form.hearAboutOther) &&
-    form.isLeader &&
-    (form.isLeader !== "Yes" || form.leaderOffice) &&
+    form.isMinister &&
+    (form.isMinister !== "Yes" || form.ministryDetails) &&
+    (form.isMinister === "Yes" || (form.isFellowshipLeader && (form.isFellowshipLeader !== "Yes" || form.fellowshipDetails))) &&
     form.expectations &&
     form.agreedToRules;
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      {error && <div className={styles.errorBanner}>{error}</div>}
+
       <div className={styles.sectionLabel}>Delegate Information</div>
 
-      <div className={styles.fieldGrid}>
+      <div className={styles.grid}>
         <div className={styles.field}>
           <label htmlFor="fullName">Full Name</label>
           <input
@@ -133,7 +161,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
             name="fullName"
             type="text"
             required
-            placeholder="Enter your full name"
+            placeholder="John Doe"
             value={form.fullName}
             onChange={handleChange}
           />
@@ -146,14 +174,37 @@ export default function RegistrationForm({ onSuccess }: Props) {
             name="email"
             type="email"
             required
-            placeholder="your@email.com"
+            placeholder="john@example.com"
             value={form.email}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="institution">Institution / School</label>
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input
+            id="phoneNumber"
+            name="phoneNumber"
+            type="tel"
+            required
+            placeholder="e.g. +234 812 345 6789"
+            value={form.phoneNumber}
+            onChange={handleChange}
+          />
+          <p className={styles.fieldNote}>* WhatsApp number is best for updates</p>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="sex">Gender</label>
+          <select id="sex" name="sex" required value={form.sex} onChange={handleChange}>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="institution">Institution / Workplace</label>
           <input
             id="institution"
             name="institution"
@@ -172,130 +223,144 @@ export default function RegistrationForm({ onSuccess }: Props) {
             name="occupation"
             type="text"
             required
-            placeholder="e.g. Student, Engineer"
+            placeholder="e.g. Student, Graphic Designer"
             value={form.occupation}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="sex">Sex</label>
-          <select
-            id="sex"
-            name="sex"
-            required
-            value={form.sex}
-            onChange={handleChange}
-          >
-            <option value="" disabled>
-              Select
-            </option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location">Residential Address/Location</label>
           <input
             id="location"
             name="location"
             type="text"
             required
-            placeholder="e.g. Lagos, Nigeria"
+            placeholder="City, State"
             value={form.location}
             onChange={handleChange}
           />
         </div>
-      </div>
 
-      <div className={styles.divider} />
-
-      <div className={styles.fieldFull}>
-        <label>How did you hear about Recalibrate?</label>
-        <div className={styles.radioGroup}>
-          {["Social Media", "Friend/Word of Mouth", "School/Campus Announcement", "Others"].map(
-            (option) => (
-              <label key={option} className={styles.radioLabel}>
-                <input
-                  type="radio"
-                  name="hearAbout"
-                  value={option}
-                  checked={form.hearAbout === option}
-                  onChange={handleChange}
-                />
-                <span className={styles.radioMark} />
-                <span>{option}</span>
-              </label>
-            )
-          )}
-        </div>
-        {form.hearAbout === "Others" && (
-          <input
-            name="hearAboutOther"
-            type="text"
-            placeholder="Please specify..."
-            value={form.hearAboutOther}
+        <div className={styles.field}>
+          <label htmlFor="hearAbout">How did you hear about Recalibrate?</label>
+          <select
+            id="hearAbout"
+            name="hearAbout"
+            required
+            value={form.hearAbout}
             onChange={handleChange}
-            className={styles.conditionalInput}
-          />
-        )}
-      </div>
-
-      <div className={styles.divider} />
-
-      <div className={styles.sectionLabel}>Leadership &amp; Ministry</div>
-
-      <div className={styles.fieldFull}>
-        <label>Are you a Campus Leader or a Minister of the Gospel?</label>
-        <div className={styles.radioGroup}>
-          {["Yes", "No"].map((option) => (
-            <label key={option} className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="isLeader"
-                value={option}
-                checked={form.isLeader === option}
-                onChange={handleChange}
-              />
-              <span className={styles.radioMark} />
-              <span>{option}</span>
-            </label>
-          ))}
+          >
+            <option value="">Select Option</option>
+            <option value="Social Media">Social Media</option>
+            <option value="Friend/Family">Friend/Family</option>
+            <option value="Church/Ministry">Church/Ministry</option>
+            <option value="WhatsApp Status">WhatsApp Status</option>
+            <option value="Others">Others</option>
+          </select>
         </div>
-        {form.isLeader === "Yes" && (
-          <div className={styles.field} style={{ marginTop: "0.75rem" }}>
-            <label htmlFor="leaderOffice">Current Office or Portfolio</label>
+
+        {form.hearAbout === "Others" && (
+          <div className={styles.fieldFull}>
+            <label htmlFor="hearAboutOther">Please specify (Others)</label>
             <input
-              id="leaderOffice"
-              name="leaderOffice"
+              id="hearAboutOther"
+              name="hearAboutOther"
               type="text"
-              placeholder="e.g. Campus Fellowship President"
-              value={form.leaderOffice}
+              required
+              placeholder="Tell us where..."
+              value={form.hearAboutOther}
               onChange={handleChange}
             />
           </div>
         )}
       </div>
 
-      <div className={styles.divider} />
+      <div className={styles.sectionLabel}>Leadership &amp; Ministry</div>
+
+      {/* Sequential Leadership Questions */}
+      <div className={styles.leadershipSection}>
+        <div className={styles.fieldFull}>
+          <label>Are you a minister of the gospel?</label>
+          <div className={styles.radioGroup}>
+            {["Yes", "No"].map((option) => (
+              <label key={option} className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="isMinister"
+                  value={option}
+                  checked={form.isMinister === option}
+                  onChange={handleChange}
+                />
+                <span className={styles.radioMark} />
+                <span>{option}</span>
+              </label>
+            ))}
+          </div>
+          {form.isMinister === "Yes" && (
+            <div className={styles.field} style={{ marginTop: "0.75rem" }}>
+              <label htmlFor="ministryDetails">Name and Location of Ministry</label>
+              <input
+                id="ministryDetails"
+                name="ministryDetails"
+                type="text"
+                required
+                placeholder="e.g. Grace Tabernacle, Lagos"
+                value={form.ministryDetails}
+                onChange={handleChange}
+              />
+            </div>
+          )}
+        </div>
+
+        {form.isMinister === "No" && (
+          <div className={styles.fieldFull} style={{ marginTop: "1rem" }}>
+            <label>Are you a campus fellowship leader?</label>
+            <div className={styles.radioGroup}>
+              {["Yes", "No"].map((option) => (
+                <label key={option} className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="isFellowshipLeader"
+                    value={option}
+                    checked={form.isFellowshipLeader === option}
+                    onChange={handleChange}
+                  />
+                  <span className={styles.radioMark} />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+            {form.isFellowshipLeader === "Yes" && (
+              <div className={styles.field} style={{ marginTop: "0.75rem" }}>
+                <label htmlFor="fellowshipDetails">Campus fellowship and post held</label>
+                <input
+                  id="fellowshipDetails"
+                  name="fellowshipDetails"
+                  type="text"
+                  required
+                  placeholder="e.g. RCF Unilag, President"
+                  value={form.fellowshipDetails}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className={styles.fieldFull}>
-        <label htmlFor="expectations">
-          What are you specifically trusting God for at this Camp Meeting?
-        </label>
+        <label htmlFor="expectations">What are your expectations for this camp?</label>
         <textarea
           id="expectations"
           name="expectations"
           rows={4}
           required
-          placeholder="Share your expectations..."
+          placeholder="I hope to receive spiritual rejuvenation..."
           value={form.expectations}
           onChange={handleChange}
         />
       </div>
-
-      <div className={styles.divider} />
 
       {/* Camp Checklist */}
       <div className={styles.infoBlock}>
@@ -363,7 +428,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
       <button
         type="submit"
         className={styles.submitBtn}
-        disabled={loading || !isFormValid}
+        disabled={loading}
       >
         {loading ? (
           <span className={styles.spinner} />

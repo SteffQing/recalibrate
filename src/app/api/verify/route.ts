@@ -38,7 +38,11 @@ export async function POST(req: Request) {
         id: registration.id,
         fullName: registration.fullName,
         email: registration.email,
-        // phoneNumber: registration.phoneNumber,
+        phoneNumber: registration.phoneNumber,
+        isMinister: registration.isMinister,
+        ministryDetails: registration.ministryDetails,
+        isFellowshipLeader: registration.isFellowshipLeader,
+        fellowshipDetails: registration.fellowshipDetails,
       },
     });
   } catch (error) {

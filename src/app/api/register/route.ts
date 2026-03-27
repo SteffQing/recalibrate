@@ -8,19 +8,23 @@ export async function POST(req: NextRequest) {
     const {
       fullName,
       email,
+      phoneNumber,
       institution,
       occupation,
       sex,
       location,
       hearAbout,
-      isLeader,
-      leaderOffice,
+      isMinister,
+      ministryDetails,
+      isFellowshipLeader,
+      fellowshipDetails,
       expectations,
     } = body;
 
     if (
       !fullName?.trim() ||
       !email?.trim() ||
+      !phoneNumber?.trim() ||
       !institution?.trim() ||
       !occupation?.trim() ||
       !sex?.trim() ||
@@ -30,7 +34,7 @@ export async function POST(req: NextRequest) {
     ) {
       return NextResponse.json(
         { error: "All required fields must be filled." },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -38,7 +42,7 @@ export async function POST(req: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email address." },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -49,7 +53,7 @@ export async function POST(req: NextRequest) {
     if (existing) {
       return NextResponse.json(
         { error: "This email has already been registered." },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
@@ -57,13 +61,16 @@ export async function POST(req: NextRequest) {
       data: {
         fullName: fullName.trim(),
         email: email.toLowerCase().trim(),
+        phoneNumber: phoneNumber.trim(),
         institution: institution.trim(),
         occupation: occupation.trim(),
         sex,
         location: location.trim(),
         hearAbout,
-        isLeader: isLeader === true || isLeader === "true",
-        leaderOffice: isLeader ? leaderOffice?.trim() || null : null,
+        isMinister: !!isMinister,
+        ministryDetails: isMinister ? ministryDetails?.trim() || null : null,
+        isFellowshipLeader: !!isFellowshipLeader,
+        fellowshipDetails: isFellowshipLeader ? fellowshipDetails?.trim() || null : null,
         expectations: expectations.trim(),
       },
     });

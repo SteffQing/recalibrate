@@ -71,6 +71,8 @@
   min-height: 100vh;
   background: var(--bg-deep);
   color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -99,11 +101,14 @@
 
 .main {
   max-width: 1000px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  flex: 1;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
