@@ -25,6 +25,9 @@ export default function SuccessModal({ id, onClose }: Props) {
   const accessCode = `RC-${generateRandomString(8)}-${id}-${generateRandomString(4)}`;
 
   useEffect(() => {
+    // Disable body scroll when modal is open
+    document.body.style.overflow = "hidden";
+    
     const generateQR = async () => {
       try {
         const url = await QRCode.toDataURL(accessCode, {
@@ -41,6 +44,11 @@ export default function SuccessModal({ id, onClose }: Props) {
       }
     };
     generateQR();
+
+    return () => {
+      // Re-enable body scroll when modal is closed
+      document.body.style.overflow = "unset";
+    };
   }, [id, accessCode]);
 
   const downloadPNG = () => {

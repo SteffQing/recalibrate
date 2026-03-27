@@ -1,13 +1,14 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
-  padding: 1rem;
+  z-index: 1000;
+  padding: 40px 20px;
+  overflow-y: auto;
   animation: fadeIn 0.3s var(--ease-out);
 }
 
@@ -24,6 +25,8 @@
   max-width: 440px;
   width: 100%;
   text-align: center;
+  margin: auto;
+  position: relative;
   animation: slideUp 0.4s var(--ease-out);
 }
 
