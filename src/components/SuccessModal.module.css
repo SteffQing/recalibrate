@@ -131,3 +131,55 @@
 .whatsappBtn svg {
   flex-shrink: 0;
 }
+
+.qrSection {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(212, 160, 23, 0.05);
+  border: 1px dashed rgba(212, 160, 23, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.qrTitle {
+  font-size: 0.85rem !important;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 1rem !important;
+}
+
+.qrWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.qrImage {
+  width: 140px;
+  height: 140px;
+  background: #000;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.downloadGroup {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.downloadBtn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--gold-light);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.downloadBtn:hover {
+  background: rgba(212, 160, 23, 0.1);
+  border-color: var(--gold);
+}

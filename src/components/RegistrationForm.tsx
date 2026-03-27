@@ -34,7 +34,7 @@ const initialFormData: FormData = {
 };
 
 interface Props {
-  onSuccess: () => void;
+  onSuccess: (id: number) => void;
 }
 
 export default function RegistrationForm({ onSuccess }: Props) {
@@ -98,7 +98,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
         return;
       }
 
-      onSuccess();
+      onSuccess(data.id);
       setForm(initialFormData);
     } catch {
       setError("Network error. Please check your connection and try again.");

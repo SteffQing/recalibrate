@@ -6,7 +6,8 @@ import SuccessModal from "@/components/SuccessModal";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(true);
+  const [registeredId, setRegisteredId] = useState<number | null>(1);
 
   return (
     <>
@@ -131,7 +132,12 @@ export default function Home() {
           <h2>Registration Form</h2>
           <p>Fill out the details below to secure your spot at the camp.</p>
         </div>
-        <RegistrationForm onSuccess={() => setShowSuccess(true)} />
+        <RegistrationForm
+          onSuccess={(id) => {
+            setRegisteredId(id);
+            setShowSuccess(true);
+          }}
+        />
       </section>
 
       {/* Footer */}
@@ -142,7 +148,15 @@ export default function Home() {
         </p>
       </footer>
 
-      {showSuccess && <SuccessModal onClose={() => setShowSuccess(false)} />}
+      {showSuccess && registeredId && (
+        <SuccessModal
+          id={registeredId}
+          onClose={() => {
+            setShowSuccess(false);
+            setRegisteredId(null);
+          }}
+        />
+      )}
     </>
   );
 }

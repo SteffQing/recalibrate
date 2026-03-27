@@ -1,12 +1,76 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
+import { jsPDF } from "jspdf";
 import styles from "./SuccessModal.module.css";
 
 interface Props {
+  id: number;
   onClose: () => void;
 }
 
-export default function SuccessModal({ onClose }: Props) {
+export default function SuccessModal({ id, onClose }: Props) {
+  const [qrDataUrl, setQrDataUrl] = useState("");
+
+  const generateRandomString = (length: number) => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const accessCode = `RC-${generateRandomString(8)}-${id}-${generateRandomString(4)}`;
+
+  useEffect(() => {
+    const generateQR = async () => {
+      try {
+        const url = await QRCode.toDataURL(accessCode, {
+          width: 512,
+          margin: 2,
+          color: {
+            dark: "#D4A017", // Gold
+            light: "#00000000", // Transparent
+          },
+        });
+        setQrDataUrl(url);
+      } catch (err) {
+        console.error("QR Generation Error:", err);
+      }
+    };
+    generateQR();
+  }, [id, accessCode]);
+
+  const downloadPNG = () => {
+    const link = document.createElement("a");
+    link.href = qrDataUrl;
+    link.download = `recalibrate-access-${id}.png`;
+    link.click();
+  };
+
+  const downloadPDF = () => {
+    const pdf = new jsPDF();
+    pdf.setFillColor(15, 15, 15); // Dark background
+    pdf.rect(0, 0, 210, 297, "F");
+    
+    pdf.setTextColor(212, 160, 23); // Gold
+    pdf.setFontSize(22);
+    pdf.text("RECALIBRATE CAMP MEETING", 105, 40, { align: "center" });
+    
+    pdf.setFontSize(16);
+    pdf.text("ACCESS CODE", 105, 60, { align: "center" });
+    
+    pdf.addImage(qrDataUrl, "PNG", 55, 80, 100, 100);
+    
+    pdf.setFontSize(12);
+    pdf.text(`User ID: ${id}`, 105, 190, { align: "center" });
+    pdf.text("Please present this QR code at the entrance.", 105, 210, { align: "center" });
+    
+    pdf.save(`recalibrate-access-${id}.pdf`);
+  };
+
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -34,6 +98,24 @@ export default function SuccessModal({ onClose }: Props) {
           You have been registered for the <strong>Recalibrate Camp Meeting</strong>.
           We look forward to seeing you there.
         </p>
+
+        <div className={styles.qrSection}>
+          <p className={styles.qrTitle}>Your Access Code</p>
+          {qrDataUrl && (
+            <div className={styles.qrWrapper}>
+              <img src={qrDataUrl} alt="Access QR Code" className={styles.qrImage} />
+            </div>
+          )}
+          <div className={styles.downloadGroup}>
+            <button onClick={downloadPNG} className={styles.downloadBtn}>
+              Download PNG
+            </button>
+            <button onClick={downloadPDF} className={styles.downloadBtn}>
+              Download PDF
+            </button>
+          </div>
+        </div>
+
         <div className={styles.ctaBox}>
           <p className={styles.ctaText}>Join the WhatsApp group for updates:</p>
           <a
