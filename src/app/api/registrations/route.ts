@@ -14,7 +14,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!passcode || passcode !== adminPasscode) {
+    const normalize = (v: unknown) => String(v ?? "").trim().toLowerCase();
+
+    if (!passcode || normalize(passcode) !== normalize(adminPasscode)) {
       return NextResponse.json(
         { error: "Incorrect passcode." },
         { status: 401 },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 type Registration = {
@@ -25,8 +25,16 @@ export default function AdminPage() {
   const [isGated, setIsGated] = useState(true);
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
+
+  // Auto-dismiss the error toast after a few seconds
+  useEffect(() => {
+    if (!error) return;
+    const timer = setTimeout(() => setError(""), 4000);
+    return () => clearTimeout(timer);
+  }, [error]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,18 +64,32 @@ export default function AdminPage() {
   if (isGated) {
     return (
       <div className={styles.gatedContainer}>
+        {error && (
+          <div className={styles.toast} role="alert">
+            {error}
+          </div>
+        )}
         <div className={styles.loginBox}>
           <h1>Admin Access</h1>
           <p>Enter the admin passcode to view registrations.</p>
           <form onSubmit={handleLogin}>
-            <input
-              type="password"
-              value={passcode}
-              onChange={(e) => setPasscode(e.target.value)}
-              placeholder="Enter Passcode"
-              className={styles.input}
-            />
-            {error && <p className={styles.error}>{error}</p>}
+            <div className={styles.passwordField}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                placeholder="Enter Passcode"
+                className={styles.input}
+              />
+              <button
+                type="button"
+                className={styles.toggleBtn}
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label={showPassword ? "Hide passcode" : "Show passcode"}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
             <button type="submit" className={styles.btn} disabled={loading}>
               {loading ? "Checking..." : "Enter"}
             </button>

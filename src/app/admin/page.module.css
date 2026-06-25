@@ -28,20 +28,72 @@
   margin-bottom: 2rem;
 }
 
+.passwordField {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
 .input {
   width: 100%;
   padding: 0.875rem;
+  padding-right: 4rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
   border-radius: var(--radius-md);
   color: #fff;
-  margin-bottom: 1rem;
   font-size: 1rem;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--gold);
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--gold-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.toggleBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2a1010;
+  border: 1px solid #ff4d4d;
+  color: #ffb3b3;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  animation: toastIn 0.25s ease;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .btn {
